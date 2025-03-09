@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Perfil de Usuario</title>
+  <style>
+    /* Estilos generales */
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-image: url('https://static.vecteezy.com/system/resources/previews/025/515/340/original/parking-top-view-garage-floor-with-cars-from-above-city-parking-lot-with-free-space-cartoon-street-carpark-with-various-vehicles-illustration-vector.jpg');
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      color: #FFF;
+    }
+
+    /* Contenedor principal */
+    .container {
+      width: 90%;
+      max-width: 800px;
+      background-color: rgba(46, 39, 57, 0.8);
+      padding: 20px;
+      border-radius: 15px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Sección de perfil */
+    .profile-section {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 20px;
+    }
+
+    /* Imagen de perfil */
+    .profile-image-container {
+      position: relative;
+      margin-right: 20px;
+    }
+
+    .profile-image {
+      width: 120px;
+      height: 120px;
+      border-radius: 10px;
+      object-fit: cover;
+    }
+
+    .edit-icon {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      background-color: #7E57C2;
+      border-radius: 15px;
+      padding: 5px;
+      cursor: pointer;
+    }
+
+    /* Información del usuario */
+    .info-container {
+      flex: 1;
+    }
+
+    .name-container {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .title {
+      font-size: 24px;
+      font-weight: bold;
+      margin-right: 10px;
+    }
+
+    .edit-name {
+      background-color: #7E57C2;
+      border-radius: 15px;
+      padding: 4px;
+      cursor: pointer;
+    }
+
+    .label {
+      font-size: 14px;
+      margin-bottom: 2px;
+    }
+
+    .email-text {
+      font-size: 14px;
+      color: #B39DDB;
+      margin-bottom: 5px;
+    }
+
+    /* Botón de cambiar contraseña */
+    .change-password-button {
+      background-color: #7E57C2;
+      border-radius: 8px;
+      padding: 5px;
+      text-align: center;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      margin-bottom: 10px;
+    }
+
+    .change-password-text {
+      font-size: 12px;
+    }
+
+    /* Botón de cerrar sesión */
+    .sign-out-button {
+      background-color: #FF3B30;
+      border-radius: 10px;
+      padding: 10px 20px;
+      text-align: center;
+      cursor: pointer;
+      color: #FFF;
+      font-size: 16px;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+
+    .sign-out-button:hover {
+      background-color: #E53935;
+    }
+
+    /* Modales */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background-color: rgba(46, 39, 57, 0.9);
+      padding: 20px;
+      border-radius: 10px;
+      width: 300px;
+      text-align: center;
+    }
+
+    .modal-content input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #7E57C2;
+      border-radius: 5px;
+      background-color: transparent;
+      color: #FFF;
+    }
+
+    .modal-content button {
+      background-color: #7E57C2;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      color: #FFF;
+      cursor: pointer;
+      margin: 5px;
+    }
+
+    .modal-content button:hover {
+      background-color: #5E35B1;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Sección de perfil -->
+    <div class="profile-section">
+      <div class="profile-image-container">
+        <img id="profileImage" src="/static/images/defaultProfile.png" alt="Foto de perfil" class="profile-image">
+        <div class="edit-icon" onclick="openImageModal()">
+          <span>📷</span> <!-- Icono de cámara -->
+        </div>
+      </div>
+
+      <div class="info-container">
+        <div class="name-container">
+          <h1 class="title" id="userName">Nombre del Usuario</h1>
+          <div class="edit-name" onclick="openNameModal()">
+            <span>✏️</span> <!-- Icono de editar -->
+          </div>
+        </div>
+
+        <p class="label">Correo electrónico:</p>
+        <p class="email-text" id="userEmail">usuario@example.com</p>
+
+        <!-- Botón de cambiar contraseña -->
+        <div class="change-password-button" onclick="openPasswordModal()">
+          <span>🔑</span> <!-- Icono de clave -->
+          <span class="change-password-text">Cambiar contraseña</span>
+        </div>
+
+        <!-- Botón de cerrar sesión -->
+        <div class="sign-out-button" onclick="handleSignOut()">
+          Cerrar sesión
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para editar nombre -->
+  <div id="nameModal" class="modal">
+    <div class="modal-content">
+      <h2>Editar Nombre</h2>
+      <input type="text" id="newName" placeholder="Nuevo nombre">
+      <button onclick="updateName()">Guardar</button>
+      <button onclick="closeModal('nameModal')">Cancelar</button>
+    </div>
+  </div>
+
+  <!-- Modal para cambiar contraseña -->
+  <div id="passwordModal" class="modal">
+    <div class="modal-content">
+      <h2>Cambiar Contraseña</h2>
+      <input type="password" id="newPassword" placeholder="Nueva contraseña">
+      <button onclick="updatePassword()">Guardar</button>
+      <button onclick="closeModal('passwordModal')">Cancelar</button>
+    </div>
+  </div>
+
+  <!-- Modal para cambiar foto de perfil -->
+  <div id="imageModal" class="modal">
+    <div class="modal-content">
+      <h2>Cambiar Foto de Perfil</h2>
+      <input type="file" id="newImage" accept="image/*">
+      <button onclick="updateProfileImage()">Guardar</button>
+      <button onclick="closeModal('imageModal')">Cancelar</button>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script type="module">
+    import { auth, updatePassword, updateProfile } from "./static/firebase_config.js";
+
+    // Verificar si el usuario está autenticado
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        // Mostrar nombre y correo del usuario
+        document.getElementById('userName').textContent = user.displayName || "Sin nombre";
+        document.getElementById('userEmail').textContent = user.email || "Sin correo";
+
+        // Mostrar foto de perfil si está disponible
+        if (user.photoURL) {
+          document.getElementById('profileImage').src = user.photoURL;
+        } else {
+          // Usar imagen predeterminada si no hay foto de perfil
+          document.getElementById('profileImage').src = "/static/images/defaultProfile.png";
+        }
+      } else {
+        // Si no hay usuario autenticado, redirigir al login
+        window.location.href = "/login";
+      }
+    });
+
+    // Función para abrir el modal de edición de nombre
+    window.openNameModal = () => {
+      document.getElementById('nameModal').style.display = 'flex';
+    };
+
+    // Función para abrir el modal de cambio de contraseña
+    window.openPasswordModal = () => {
+      document.getElementById('passwordModal').style.display = 'flex';
+    };
+
+    // Función para abrir el modal de cambio de foto
+    window.openImageModal = () => {
+      document.getElementById('imageModal').style.display = 'flex';
+    };
+
+    // Función para cerrar modales
+    window.closeModal = (modalId) => {
+      document.getElementById(modalId).style.display = 'none';
+    };
+
+    // Función para actualizar el nombre
+    window.updateName = async () => {
+      const newName = document.getElementById('newName').value;
+      if (newName && auth.currentUser) {
+        try {
+          await updateProfile(auth.currentUser, { displayName: newName });
+          document.getElementById('userName').textContent = newName;
+          closeModal('nameModal');
+          alert("Nombre actualizado correctamente.");
+        } catch (error) {
+          alert(`Error: ${error.message}`);
+        }
+      }
+    };
+
+    // Función para actualizar la contraseña
+    window.updatePassword = async () => {
+      const newPassword = document.getElementById('newPassword').value;
+      if (newPassword && auth.currentUser) {
+        try {
+          await updatePassword(auth.currentUser, newPassword);
+          closeModal('passwordModal');
+          alert("Contraseña actualizada correctamente.");
+        } catch (error) {
+          alert(`Error: ${error.message}`);
+        }
+      }
+    };
+
+    // Función para actualizar la foto de perfil
+    window.updateProfileImage = async () => {
+      const fileInput = document.getElementById('newImage');
+      if (fileInput.files && fileInput.files[0] && auth.currentUser) {
+        const file = fileInput.files[0];
+        const reader = new FileReader();
+        reader.onload = async (e) => {
+          try {
+            await updateProfile(auth.currentUser, { photoURL: e.target.result });
+            document.getElementById('profileImage').src = e.target.result;
+            closeModal('imageModal');
+            alert("Foto de perfil actualizada correctamente.");
+          } catch (error) {
+            alert(`Error: ${error.message}`);
+          }
+        };
+        reader.readAsDataURL(file);
+      }
+    };
+
+    // Función para cerrar sesión
+    window.handleSignOut = async () => {
+      try {
+        await auth.signOut();
+        window.location.href = "/login";
+      } catch (error) {
+        alert(`Error: ${error.message}`);
+      }
+    };
+  </script>
+</body>
+</html>
