@@ -316,25 +316,32 @@
       }
     };
 
-    // Función para actualizar la foto de perfil
-    window.updateProfileImage = async () => {
-      const fileInput = document.getElementById('newImage');
-      if (fileInput.files && fileInput.files[0] && auth.currentUser) {
-        const file = fileInput.files[0];
-        const reader = new FileReader();
-        reader.onload = async (e) => {
-          try {
-            await updateProfile(auth.currentUser, { photoURL: e.target.result });
-            document.getElementById('profileImage').src = e.target.result;
-            closeModal('imageModal');
-            alert("Foto de perfil actualizada correctamente.");
-          } catch (error) {
-            alert(`Error: ${error.message}`);
-          }
-        };
-        reader.readAsDataURL(file);
-      }
-    };
+    // Función para actualizar la foto de perfil en Firebase Storage
+window.updateProfileImage = async () => {
+  const fileInput = document.getElementById('newImage');
+  if (fileInput.files && fileInput.files[0] && auth.currentUser) {
+    const file = fileInput.files[0];
+
+    // Subir a Firebase Storage
+    const storage = getStorage();
+    const storageRef = ref(storage, `profileImages/${auth.currentUser.uid}`);
+
+    try {
+      await uploadBytes(storageRef, file);
+      const downloadURL = await getDownloadURL(storageRef);
+
+      // Actualizar foto en Firebase Auth
+      await updateProfile(auth.currentUser, { photoURL: downloadURL });
+
+      // Mostrar la nueva imagen
+      document.getElementById('profileImage').src = downloadURL;
+      closeModal('imageModal');
+      alert("Foto de perfil actualizada correctamente.");
+    } catch (error) {
+      alert(`Error: ${error.message}`);
+    }
+  }
+};
 
     // Función para cerrar sesión
     window.handleSignOut = async () => {
