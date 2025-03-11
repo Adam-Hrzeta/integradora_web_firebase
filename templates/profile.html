@@ -245,7 +245,7 @@
 
   <!-- Scripts -->
   <script type="module">
-    import { auth, updatePassword, updateProfile } from "./static/firebase_config.js";
+    import { auth, updatePassword, updateProfile } from "./controllers/firebase_config.js";
 
     // Verificar si el usuario está autenticado
     auth.onAuthStateChanged((user) => {
