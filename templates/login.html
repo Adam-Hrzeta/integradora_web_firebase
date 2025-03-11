@@ -94,13 +94,13 @@
 <body>
   <div class="form-container">
     <h1 class="title">Inicio de Sesión</h1>
-    <form id="loginForm">
+    <form id="loginForm" action="#" method="POST">
       <input type="email" class="input" id="email" placeholder="Correo electrónico" required>
       <input type="password" class="input" id="password" placeholder="Contraseña" required>
       <button type="submit" class="button">Iniciar Sesión</button>
     </form>
-    <p class="register-button" onclick="window.location.href='/register'">¿No tienes cuenta? Regístrate</p>
+    <p class="register-button"><a href="/register" style="color: #7E57C2; text-decoration: none;">¿No tienes cuenta? Regístrate</a></p>
   </div>
-  <script type="module" src="{{ url_for('controllers', filename='auth.js') }}"></script>
+  <script type="module" src="{{ url_for('static', filename='auth.js') }}"></script>
 </body>
 </html>

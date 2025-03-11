@@ -99,7 +99,7 @@
 <body>
   <div class="form-container">
     <h1 class="title">Registro de Usuario</h1>
-    <form id="registerForm">
+    <form id="registerForm" action="#" method="POST">
       <!-- Campo para el nombre -->
       <input type="text" class="input" id="displayName" placeholder="Nombre completo" required>
       <!-- Campo para el correo electrónico -->
@@ -109,8 +109,8 @@
       <!-- Botón de registro -->
       <button type="submit" class="button">Registrarse</button>
     </form>
-    <p class="register-button" onclick="window.location.href='/login'">¿Ya tienes cuenta? Inicia sesión</p>
+    <p class="register-button"><a href="/login" style="color: #7E57C2; text-decoration: none;">¿Ya tienes cuenta? Inicia sesión</a></p>
   </div>
-  <script type="module" src="{{ url_for('controllers', filename='auth.js') }}"></script>
+  <script type="module" src="{{ url_for('static', filename='auth.js') }}"></script>
 </body>
 </html>

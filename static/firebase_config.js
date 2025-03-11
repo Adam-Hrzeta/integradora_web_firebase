@@ -1,7 +1,9 @@
+// firebase_config.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getAuth, updatePassword, updateProfile } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import { getStorage } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js"; // Importación corregida
+import { getAuth } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getStorage } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
 
+// Configuración de Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyCM-edYKqmH3ZJVYGbD0uEColY9d4LmTIo",
   authDomain: "integradora-d5795.firebaseapp.com",
@@ -12,9 +14,10 @@ const firebaseConfig = {
   measurementId: "G-1XZG50BE57"
 };
 
-// Initialize Firebase
+// Inicializa Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-const storage = getStorage(app); // Asegúrate de pasar `app` aquí
+const storage = getStorage(app);
 
-export { auth, updatePassword, updateProfile, storage };
+// Exporta solo lo necesario
+export { auth, storage };
