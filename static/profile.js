@@ -59,22 +59,51 @@ document.getElementById("savePasswordButton").addEventListener("click", async ()
   }
 });
 
-// Guardar nueva foto de perfil
 document.getElementById("saveProfileImageButton").addEventListener("click", async () => {
-  const file = document.getElementById("profileImageInput").files[0];
-  if (file) {
+  const fileInput = document.getElementById("profileImageInput");
+  const file = fileInput.files[0];
+
+  if (!file) {
+    alert("Selecciona una imagen primero.");
+    return;
+  }
+
+  if (!auth.currentUser) {
+    alert("Usuario no autenticado.");
+    return;
+  }
+
+  try {
+    console.log("Subiendo imagen:", file.name);
     const storageRef = ref(storage, `profileImages/${auth.currentUser.uid}`);
+    
+    // Subir la imagen
     await uploadBytes(storageRef, file);
+    console.log("Imagen subida con éxito.");
+
+    // Obtener URL de descarga
     const downloadURL = await getDownloadURL(storageRef);
+    console.log("URL de la imagen:", downloadURL);
+
+    // Actualizar perfil del usuario
     await updateProfile(auth.currentUser, { photoURL: downloadURL });
-    profileImage.src = downloadURL;
+
+    // Actualizar imagen en el perfil
+    profileImage.src = `${downloadURL}?t=${new Date().getTime()}`;
+
+    // Cerrar modal
     changeProfileImageModal.style.display = "none";
+    alert("Imagen actualizada correctamente.");
+  } catch (error) {
+    console.error("Error al subir la imagen:", error);
+    alert("Error al subir la imagen. Revisa la consola.");
   }
 });
 
+
 // Cerrar sesión
 signOutButton.addEventListener("click", () => {
-  signOut(auth).then(() => window.location.href = "/profile");
+  signOut(auth).then(() => window.location.href = "/login");
 });
 
 // Escuchar cambios en la autenticación
