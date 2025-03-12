@@ -1,5 +1,4 @@
-// auth.js
-import { auth } from "./firebase_config.js"; // Importa desde el archivo local
+import { auth } from "./firebase_config.js";
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
@@ -17,10 +16,6 @@ document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
   try {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     console.log("Usuario autenticado:", userCredential.user);
-
-    // Obtén el token de Firebase (opcional, si lo necesitas para el backend)
-    const token = await userCredential.user.getIdToken();
-    console.log("Token de Firebase:", token);
 
     // Redirige al usuario después del inicio de sesión
     window.location.href = "/dashboard";

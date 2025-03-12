@@ -59,6 +59,7 @@ document.getElementById("savePasswordButton").addEventListener("click", async ()
   }
 });
 
+// Subir imagen de perfil
 document.getElementById("saveProfileImageButton").addEventListener("click", async () => {
   const fileInput = document.getElementById("profileImageInput");
   const file = fileInput.files[0];
@@ -75,7 +76,9 @@ document.getElementById("saveProfileImageButton").addEventListener("click", asyn
 
   try {
     console.log("Subiendo imagen:", file.name);
-    const storageRef = ref(storage, `profileImages/${auth.currentUser.uid}`);
+
+    // Referencia de almacenamiento con un nombre único
+    const storageRef = ref(storage, `profileImages/${auth.currentUser.uid}/${file.name}`);
     
     // Subir la imagen
     await uploadBytes(storageRef, file);
@@ -100,7 +103,6 @@ document.getElementById("saveProfileImageButton").addEventListener("click", asyn
   }
 });
 
-
 // Cerrar sesión
 signOutButton.addEventListener("click", () => {
   signOut(auth).then(() => window.location.href = "/login");
@@ -109,10 +111,12 @@ signOutButton.addEventListener("click", () => {
 // Escuchar cambios en la autenticación
 onAuthStateChanged(auth, (user) => {
   if (user) {
+    console.log("Usuario autenticado:", user);
     userName.textContent = user.displayName || "Sin nombre";
     userEmail.textContent = user.email;
-    profileImage.src = user.photoURL || "https://via.placeholder.com/100";
+    profileImage.src = user.photoURL || "/static/images/default_profile.png";
   } else {
-    window.location.href = "/profile";
+    console.log("Usuario no autenticado. Redirigiendo...");
+    window.location.href = "/login";
   }
 });
