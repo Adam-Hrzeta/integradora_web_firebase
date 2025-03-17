@@ -16,7 +16,7 @@ def register():
 
 @app.route('/profile')
 def profile():
-    return render_template('profile.html')
+    return render_template('profileAdmin.html')
 
 
 if __name__ == '__main__':

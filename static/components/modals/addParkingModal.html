@@ -14,8 +14,7 @@
             transform: translate(-50%, -50%); /* Centra exactamente */
             z-index: 1000; /* Asegura que esté por encima de otros elementos */
             display: none; /* Oculta el modal por defecto */
-            overflow-y: auto; /* Permite el desplazamiento si el contenido es muy largo */
-            max-height: 90vh; /* Limita la altura máxima del modal */
+            box-sizing: border-box; /* Asegura que el padding no afecte el ancho total */
         }
 
         #addParkingModal input,
@@ -29,6 +28,7 @@
             margin-bottom: 15px;
             font-family: 'Century Gothic', sans-serif;
             font-size: 1rem;
+            box-sizing: border-box; /* Asegura que el padding no afecte el ancho total */
         }
 
         #addParkingModal input::placeholder,
@@ -51,6 +51,7 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
+            box-sizing: border-box; /* Asegura que el padding no afecte el ancho total */
         }
 
         #addParkingModal button.cancel {
