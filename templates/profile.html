@@ -88,6 +88,7 @@
         .profile-container h2 {
             font-size: 1.5rem;
             margin-bottom: 10px;
+            font-weight: bold; /* Texto en negritas */
         }
 
         .profile-container p {
@@ -95,10 +96,15 @@
             font-size: 0.9rem;
         }
 
+        .profile-container p strong {
+            font-weight: bold; /* Texto en negritas */
+        }
+
         /* Estilos para todos los botones */
         button {
             border: 1px solid rgba(255, 255, 255, 0.2); /* Borde con opacidad */
             transition: all 0.3s ease;
+            border-radius: 25px; /* Bordes más redondeados */
         }
 
         button:hover {
@@ -115,6 +121,7 @@
             gap: 8px;
             font-size: 0.9rem;
             background-color: #7e57c2; /* Morado */
+            border-radius: 25px; /* Bordes más redondeados */
         }
 
         .profile-container button:hover {
@@ -139,7 +146,7 @@
 
         .parking-status {
             padding: 5px 10px;
-            border-radius: 5px;
+            border-radius: 25px; /* Bordes más redondeados */
             font-weight: bold;
             font-size: 0.9rem;
         }
@@ -188,7 +195,7 @@
             color: #ffffff;
             border: 1px solid rgba(255, 255, 255, 0.2); /* Borde con opacidad */
             padding: 10px 20px;
-            border-radius: 5px;
+            border-radius: 25px; /* Bordes más redondeados */
             cursor: pointer;
             width: 100%;
             transition: all 0.3s ease;
@@ -240,6 +247,16 @@
             color: #ffffff;
         }
 
+        /* Botón "Agregar Parking" */
+        #addParkingButton {
+            border-radius: 25px; /* Bordes más redondeados */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto; /* Centrar el botón */
+            width: 50%; /* Ancho reducido para mejor apariencia */
+        }
+
         /* Responsividad */
         @media (min-width: 768px) {
             .main-container {
@@ -257,9 +274,9 @@
     <div class="main-container slide-in">
         <!-- Perfil de usuario -->
         <div class="profile-container fade-in">
-            <h2>Perfil de Administrador</h2> <!-- Texto actualizado -->
+            <h2>Perfil de Administrador</h2> <!-- Texto en negritas -->
             <p id="userName">Nombre</p>
-            <p><strong>Correo Electrónico:</strong></p>
+            <p><strong>Correo Electrónico:</strong></p> <!-- Texto en negritas -->
             <p id="userEmail">correo@ejemplo.com</p>
             <button id="editNameButton" class="btn waves-effect waves-light">
                 <i class="material-icons">edit</i> Editar Nombre
