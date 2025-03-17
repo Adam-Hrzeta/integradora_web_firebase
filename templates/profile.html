@@ -29,15 +29,11 @@
         }
 
         .slide-in {
-            animation: slideIn 0.5s ease-out forwards;
+            animation: slideIn 1.0s ease-out forwards;
         }
 
         .fade-in {
-            animation: fadeIn 0.5s ease-in forwards;
-        }
-
-        .modal {
-            animation: modalFadeIn 0.3s ease-out;
+            animation: fadeIn 1.0s ease-in forwards;
         }
 
         /* Estilos generales */
@@ -163,65 +159,6 @@
             background-color: #ff9800; /* Naranja */
         }
 
-        .modal {
-            background-color: rgba(0, 0, 0, 0.8); /* Fondo oscuro semi-transparente */
-            color: #ffffff;
-            border-radius: 10px;
-            padding: 20px;
-            max-width: 400px;
-            margin: 0 auto;
-            border: 1px solid rgba(255, 255, 255, 0.2); /* Borde con opacidad */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-        }
-
-        .modal input, .modal select {
-            background-color: rgba(255, 255, 255, 0.1); /* Fondo semi-transparente */
-            color: #ffffff;
-            border: 1px solid rgba(255, 255, 255, 0.2); /* Borde con opacidad */
-            padding: 12px 15px; /* Más padding para el texto */
-            border-radius: 5px;
-            width: 100%;
-            margin-bottom: 15px;
-            font-family: 'Century Gothic', sans-serif;
-            font-size: 1rem;
-        }
-
-        .modal input::placeholder, .modal select::placeholder {
-            color: #c5cae9; /* Azul claro para el placeholder */
-        }
-
-        .modal button {
-            background-color: #4caf50; /* Verde */
-            color: #ffffff;
-            border: 1px solid rgba(255, 255, 255, 0.2); /* Borde con opacidad */
-            padding: 10px 20px;
-            border-radius: 25px; /* Bordes más redondeados */
-            cursor: pointer;
-            width: 100%;
-            transition: all 0.3s ease;
-            font-family: 'Century Gothic', sans-serif;
-            font-size: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .modal button.cancel {
-            background-color: #f44336; /* Rojo */
-            margin-top: 10px;
-        }
-
-        .modal button:hover {
-            background-color: #66bb6a; /* Verde más claro */
-            border-color: #ffffff;
-        }
-
-        .modal button.cancel:hover {
-            background-color: #e53935; /* Rojo más oscuro */
-            border-color: #ffffff;
-        }
-
         .password-container {
             position: relative;
         }
@@ -266,9 +203,9 @@
     <div class="main-container slide-in">
         <!-- Perfil de usuario -->
         <div class="profile-container fade-in">
-            <h2>Perfil de Administrador</h2> <!-- Texto en negritas -->
+            <h2>Perfil de Administrador</h2>
             <p id="userName">Nombre</p>
-            <p><strong>Correo Electrónico:</strong></p> <!-- Texto en negritas -->
+            <p><strong>Correo Electrónico:</strong></p>
             <p id="userEmail">correo@ejemplo.com</p>
             <button id="editNameButton" class="btn waves-effect waves-light">
                 <i class="material-icons">edit</i> Editar Nombre
@@ -291,38 +228,8 @@
         </div>
     </div>
 
-    <!-- Modal para editar nombre -->
-    <div id="editNameModal" class="modal">
-        <input type="text" id="newUserName" placeholder="Nuevo Nombre">
-        <button id="saveNameButton" class="btn waves-effect waves-light">Guardar</button>
-        <button id="cancelNameButton" class="btn waves-effect waves-light cancel">Cancelar</button>
-    </div>
-
-    <!-- Modal para cambiar contraseña -->
-    <div id="changePasswordModal" class="modal">
-        <div class="password-container">
-            <input type="password" id="newPassword" placeholder="Nueva Contraseña">
-            <i class="material-icons toggle-password">visibility_off</i>
-        </div>
-        <div class="password-container">
-            <input type="password" id="confirmPassword" placeholder="Confirmar Contraseña">
-            <i class="material-icons toggle-password">visibility_off</i>
-        </div>
-        <button id="savePasswordButton" class="btn waves-effect waves-light">Guardar</button>
-        <button id="cancelPasswordButton" class="btn waves-effect waves-light cancel">Cancelar</button>
-    </div>
-
-    <!-- Modal para agregar parking -->
-    <div id="addParkingModal" class="modal">
-        <input type="text" id="newParkingLabel" placeholder="Nombre del Parking">
-        <select id="newParkingStatus">
-            <option value="libre">Disponible</option>
-            <option value="ocupado">Ocupado</option>
-            <option value="servicio">En Servicio</option>
-        </select>
-        <button id="saveParkingButton" class="btn waves-effect waves-light">Guardar</button>
-        <button id="cancelParkingButton" class="btn waves-effect waves-light cancel">Cancelar</button>
-    </div>
+    <!-- Contenedor para modales (se cargarán dinámicamente) -->
+    <div id="modals-container"></div>
 
     <!-- Scripts -->
     <script type="module" src="../static/controllers/admin.js"></script>
