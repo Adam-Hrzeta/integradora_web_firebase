@@ -18,7 +18,7 @@ document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
     console.log("Usuario autenticado:", userCredential.user);
 
     // Redirige al usuario después del inicio de sesión
-    window.location.href = "/dashboard";
+    window.location.href = "/profile";
   } catch (error) {
     console.error("Error en el inicio de sesión:", error);
     alert(`Error: ${error.message}`);

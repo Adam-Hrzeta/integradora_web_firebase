@@ -3,126 +3,535 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfil de Usuario</title>
+    <title>Administrador de Parkings</title>
+    <!-- Materialize CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
+    <!-- Iconos de Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Fuente Century Gothic -->
+    <link href="https://fonts.googleapis.com/css2?family=Century+Gothic:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Estilos personalizados -->
     <style>
+        /* Animaciones personalizadas */
+        @keyframes slideIn {
+            from { transform: translateX(-100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide-in {
+            animation: slideIn 0.5s ease-out forwards;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in forwards;
+        }
+
+        .modal {
+            animation: modalFadeIn 0.3s ease-out;
+        }
+
+        /* Estilos generales */
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            background-image: url('https://static.vecteezy.com/system/resources/previews/025/515/340/original/parking-top-view-garage-floor-with-cars-from-above-city-parking-lot-with-free-space-cartoon-street-carpark-with-various-vehicles-illustration-vector.jpg');
+            background-size: cover;
+            background-position: center;
+            color: #ffffff;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
+            font-family: 'Century Gothic', sans-serif;
+        }
+
+        .main-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.726); /* Fondo semi-transparente oscuro */
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2); /* Borde con opacidad */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .profile-container, .parkings-container {
+            background-color: rgba(255, 255, 255, 0.1); /* Fondo semi-transparente */
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid rgb(255, 255, 255); /* Borde con opacidad */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
         }
 
         .profile-container {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            width: 300px;
+            width: 100%;
+            max-width: 300px;
         }
 
-        .profile-container img {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
+        .parkings-container {
+            flex-grow: 1;
+        }
+
+        .profile-container h2 {
+            font-size: 1.5rem;
             margin-bottom: 10px;
         }
 
+        .profile-container p {
+            margin: 5px 0;
+            font-size: 0.9rem;
+        }
+
+        /* Estilos para todos los botones */
+        button {
+            border: 1px solid rgba(255, 255, 255, 0.2); /* Borde con opacidad */
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            border-color: #ffffff;
+        }
+
+        /* Botones del perfil */
         .profile-container button {
-            display: block;
             width: 100%;
-            margin: 10px 0;
-            padding: 10px;
-            border: none;
-            background-color: #007bff;
-            color: white;
-            border-radius: 5px;
-            cursor: pointer;
+            margin: 8px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            background-color: #7e57c2; /* Morado */
         }
 
         .profile-container button:hover {
-            background-color: #0056b3;
+            background-color: #9575cd; /* Morado más claro */
         }
 
-        /* Estilos para modales */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: white;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-            border-radius: 10px;
-        }
-
-        .modal input {
-            width: 100%;
-            padding: 10px;
+        .parking-item {
+            background-color: rgba(255, 255, 255, 0.377); /* Fondo semi-transparente */
+            padding: 15px;
             margin: 10px 0;
-            border: 1px solid #ccc;
             border-radius: 5px;
+            border: 1px solid rgba(255, 255, 255, 0.2); /* Borde con opacidad */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .parking-item:hover {
+            background-color: rgba(255, 255, 255, 0.2); /* Fondo más claro al pasar el mouse */
+        }
+
+        .parking-status {
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .parking-status.libre {
+            background-color: #4caf50; /* Verde */
+        }
+
+        .parking-status.ocupado {
+            background-color: #f44336; /* Rojo */
+        }
+
+        .parking-status.servicio {
+            background-color: #ff9800; /* Naranja */
+        }
+
+        .modal {
+            background-color: rgba(0, 0, 0, 0.8); /* Fondo oscuro semi-transparente */
+            color: #ffffff;
+            border-radius: 10px;
+            padding: 20px;
+            max-width: 400px;
+            margin: 0 auto;
+            border: 1px solid rgba(255, 255, 255, 0.2); /* Borde con opacidad */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal input, .modal select {
+            background-color: rgba(255, 255, 255, 0.1); /* Fondo semi-transparente */
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.2); /* Borde con opacidad */
+            padding: 12px 15px; /* Más padding para el texto */
+            border-radius: 5px;
+            width: 100%;
+            margin-bottom: 15px;
+            font-family: 'Century Gothic', sans-serif;
+            font-size: 1rem;
+        }
+
+        .modal input::placeholder, .modal select::placeholder {
+            color: #c5cae9; /* Azul claro para el placeholder */
         }
 
         .modal button {
-            background-color: #28a745;
-            color: white;
-            padding: 10px;
-            border: none;
-            cursor: pointer;
+            background-color: #4caf50; /* Verde */
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.2); /* Borde con opacidad */
+            padding: 10px 20px;
             border-radius: 5px;
+            cursor: pointer;
             width: 100%;
+            transition: all 0.3s ease;
+            font-family: 'Century Gothic', sans-serif;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .modal button.cancel {
+            background-color: #f44336; /* Rojo */
+            margin-top: 10px;
         }
 
         .modal button:hover {
-            background-color: #218838;
+            background-color: #66bb6a; /* Verde más claro */
+            border-color: #ffffff;
+        }
+
+        .modal button.cancel:hover {
+            background-color: #e53935; /* Rojo más oscuro */
+            border-color: #ffffff;
         }
 
         .close {
-            display: block;
-            text-align: right;
+            color: #f44336; /* Rojo */
             cursor: pointer;
-            font-size: 20px;
-            color: red;
+            font-size: 24px;
+            text-align: right;
+            display: block;
+        }
+
+        .password-container {
+            position: relative;
+        }
+
+        .password-container .toggle-password {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #c5cae9;
+        }
+
+        .password-container .toggle-password:hover {
+            color: #ffffff;
+        }
+
+        /* Responsividad */
+        @media (min-width: 768px) {
+            .main-container {
+                flex-direction: row;
+            }
+
+            .profile-container {
+                width: 300px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="profile-container">
-        <img id="profileImage" src="/static/images/defaultProfile.png" alt="Foto de perfil">
-        <h2 id="userName">Nombre</h2>
-        <p id="userEmail">Correo</p>
-        <button id="editNameButton">Editar Nombre</button>
-        <button id="changePasswordButton">Cambiar Contraseña</button>
-        <button id="editProfileImage">Cambiar Foto</button>
-        <button id="signOutButton">Cerrar Sesión</button>
+    <!-- Contenedor principal -->
+    <div class="main-container slide-in">
+        <!-- Perfil de usuario -->
+        <div class="profile-container fade-in">
+            <h2>Perfil de Administrador</h2> <!-- Texto actualizado -->
+            <p id="userName">Nombre</p>
+            <p><strong>Correo Electrónico:</strong></p>
+            <p id="userEmail">correo@ejemplo.com</p>
+            <button id="editNameButton" class="btn waves-effect waves-light">
+                <i class="material-icons">edit</i> Editar Nombre
+            </button>
+            <button id="changePasswordButton" class="btn waves-effect waves-light">
+                <i class="material-icons">lock</i> Cambiar Contraseña
+            </button>
+            <button id="signOutButton" class="btn waves-effect waves-light red">
+                <i class="material-icons">exit_to_app</i> Cerrar Sesión
+            </button>
+        </div>
+
+        <!-- Parkings disponibles -->
+        <div class="parkings-container fade-in">
+            <h2>Administrar Parkings</h2>
+            <div id="parkingsList"></div>
+            <button id="addParkingButton" class="btn waves-effect waves-light green">
+                <i class="material-icons">add</i> Agregar Parking
+            </button>
+        </div>
     </div>
 
-    <!-- Modales -->
+    <!-- Modal para editar nombre -->
     <div id="editNameModal" class="modal">
         <input type="text" id="newUserName" placeholder="Nuevo Nombre">
-        <button id="saveNameButton">Guardar</button>
+        <button id="saveNameButton" class="btn waves-effect waves-light">Guardar</button>
+        <button id="cancelNameButton" class="btn waves-effect waves-light cancel">Cancelar</button>
         <span class="close">&times;</span>
     </div>
-    
+
+    <!-- Modal para cambiar contraseña -->
     <div id="changePasswordModal" class="modal">
-        <input type="password" id="newPassword" placeholder="Nueva Contraseña">
-        <button id="savePasswordButton">Guardar</button>
+        <div class="password-container">
+            <input type="password" id="newPassword" placeholder="Nueva Contraseña">
+            <i class="material-icons toggle-password">visibility_off</i>
+        </div>
+        <div class="password-container">
+            <input type="password" id="confirmPassword" placeholder="Confirmar Contraseña">
+            <i class="material-icons toggle-password">visibility_off</i>
+        </div>
+        <button id="savePasswordButton" class="btn waves-effect waves-light">Guardar</button>
+        <button id="cancelPasswordButton" class="btn waves-effect waves-light cancel">Cancelar</button>
         <span class="close">&times;</span>
     </div>
 
-    <div id="changeProfileImageModal" class="modal">
-        <input type="file" id="profileImageInput">
-        <button id="saveProfileImageButton">Subir Imagen</button>
+    <!-- Modal para agregar parking -->
+    <div id="addParkingModal" class="modal">
+        <input type="text" id="newParkingLabel" placeholder="Nombre del Parking">
+        <select id="newParkingStatus">
+            <option value="libre">Disponible</option>
+            <option value="ocupado">Ocupado</option>
+            <option value="servicio">En Servicio</option>
+        </select>
+        <button id="saveParkingButton" class="btn waves-effect waves-light">Guardar</button>
+        <button id="cancelParkingButton" class="btn waves-effect waves-light cancel">Cancelar</button>
         <span class="close">&times;</span>
     </div>
 
-    <script type="module" src="{{ url_for('static', filename='firebase_config.js') }}"></script>
-    <script type="module" src="{{ url_for('static', filename='profile.js') }}"></script>
+    <!-- Scripts de Firebase y lógica -->
+    <script type="module">
+        import { auth } from "/static/js/firebase_config.js";
+        import { 
+            onAuthStateChanged, 
+            signOut, 
+            updatePassword, 
+            updateProfile 
+        } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { 
+            getFirestore, 
+            collection, 
+            query, 
+            where, 
+            onSnapshot, 
+            addDoc, 
+            updateDoc, 
+            doc,
+            deleteDoc 
+        } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        // Inicializar Firestore
+        const db = getFirestore();
+
+        // Referencias a elementos del DOM
+        const userName = document.getElementById("userName");
+        const userEmail = document.getElementById("userEmail");
+        const signOutButton = document.getElementById("signOutButton");
+        const editNameButton = document.getElementById("editNameButton");
+        const changePasswordButton = document.getElementById("changePasswordButton");
+        const parkingsList = document.getElementById("parkingsList");
+        const addParkingButton = document.getElementById("addParkingButton");
+
+        // Modales
+        const editNameModal = document.getElementById("editNameModal");
+        const changePasswordModal = document.getElementById("changePasswordModal");
+        const addParkingModal = document.getElementById("addParkingModal");
+
+        // Cerrar modales
+        document.querySelectorAll(".close").forEach(button => {
+            button.addEventListener("click", () => {
+                editNameModal.style.display = "none";
+                changePasswordModal.style.display = "none";
+                addParkingModal.style.display = "none";
+            });
+        });
+
+        // Botones de cancelar
+        document.getElementById("cancelNameButton").addEventListener("click", () => {
+            editNameModal.style.display = "none";
+        });
+
+        document.getElementById("cancelPasswordButton").addEventListener("click", () => {
+            changePasswordModal.style.display = "none";
+        });
+
+        document.getElementById("cancelParkingButton").addEventListener("click", () => {
+            addParkingModal.style.display = "none";
+        });
+
+        // Abrir modal de editar nombre
+        editNameButton.addEventListener("click", () => {
+            document.getElementById("newUserName").value = ""; // Limpiar el input
+            editNameModal.style.display = "block";
+        });
+
+        // Abrir modal de cambiar contraseña
+        changePasswordButton.addEventListener("click", () => {
+            document.getElementById("newPassword").value = ""; // Limpiar el input
+            document.getElementById("confirmPassword").value = ""; // Limpiar el input
+            changePasswordModal.style.display = "block";
+        });
+
+        // Abrir modal de agregar parking
+        addParkingButton.addEventListener("click", () => {
+            addParkingModal.style.display = "block";
+        });
+
+        // Mostrar/ocultar contraseña
+        document.querySelectorAll(".toggle-password").forEach(icon => {
+            icon.addEventListener("click", () => {
+                const input = icon.previousElementSibling;
+                if (input.type === "password") {
+                    input.type = "text";
+                    icon.textContent = "visibility";
+                } else {
+                    input.type = "password";
+                    icon.textContent = "visibility_off";
+                }
+            });
+        });
+
+        // Guardar nuevo nombre
+        document.getElementById("saveNameButton").addEventListener("click", async () => {
+            const newName = document.getElementById("newUserName").value;
+            if (newName) {
+                try {
+                    await updateProfile(auth.currentUser, { displayName: newName });
+                    userName.textContent = newName;
+                    editNameModal.style.display = "none";
+                } catch (error) {
+                    console.error("Error al actualizar el nombre:", error);
+                    alert("Error al actualizar el nombre. Inténtalo de nuevo.");
+                }
+            }
+        });
+
+        // Guardar nueva contraseña
+        document.getElementById("savePasswordButton").addEventListener("click", async () => {
+            const newPassword = document.getElementById("newPassword").value;
+            const confirmPassword = document.getElementById("confirmPassword").value;
+
+            if (newPassword !== confirmPassword) {
+                alert("Las contraseñas no coinciden. Inténtalo de nuevo.");
+                return;
+            }
+
+            if (newPassword) {
+                try {
+                    await updatePassword(auth.currentUser, newPassword);
+                    alert("Contraseña actualizada correctamente");
+                    changePasswordModal.style.display = "none";
+                } catch (error) {
+                    console.error("Error al actualizar la contraseña:", error);
+                    alert("Error al actualizar la contraseña. Inténtalo de nuevo.");
+                }
+            }
+        });
+
+        // Cerrar sesión
+        signOutButton.addEventListener("click", () => {
+            signOut(auth).then(() => window.location.href = "/login");
+        });
+
+        // Escuchar cambios en la autenticación
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                console.log("Usuario autenticado:", user);
+                userName.textContent = user.displayName || "Sin nombre";
+                userEmail.textContent = user.email || "Sin correo";
+            } else {
+                console.log("Usuario no autenticado. Redirigiendo...");
+                window.location.href = "/login";
+            }
+        });
+
+        // Obtener parkings
+        const getParkings = () => {
+            const q = query(collection(db, "parkings"));
+            onSnapshot(q, (snapshot) => {
+                parkingsList.innerHTML = ""; // Limpiar lista
+                snapshot.forEach((doc) => {
+                    const parking = doc.data();
+                    const parkingItem = document.createElement("div");
+                    parkingItem.className = "parking-item";
+
+                    // Mostrar nombre y estado del parking
+                    parkingItem.innerHTML = `
+                        <span>${parking.label}</span>
+                        <span class="parking-status ${parking.status}">${parking.status}</span>
+                        <div>
+                            <button onclick="updateParkingStatus('${doc.id}', 'libre')" class="btn-small green">Disponible</button>
+                            <button onclick="updateParkingStatus('${doc.id}', 'ocupado')" class="btn-small red">Ocupado</button>
+                            <button onclick="updateParkingStatus('${doc.id}', 'servicio')" class="btn-small orange">En Servicio</button>
+                            <button onclick="deleteParking('${doc.id}')" class="btn-small grey">Eliminar</button>
+                        </div>
+                    `;
+                    parkingsList.appendChild(parkingItem);
+                });
+            });
+        };
+
+        // Actualizar estado del parking
+        window.updateParkingStatus = async (parkingId, status) => {
+            try {
+                await updateDoc(doc(db, "parkings", parkingId), { status });
+                alert("Estado del parking actualizado correctamente");
+            } catch (error) {
+                console.error("Error al actualizar el estado del parking:", error);
+                alert("Error al actualizar el estado del parking. Inténtalo de nuevo.");
+            }
+        };
+
+        // Eliminar parking
+        window.deleteParking = async (parkingId) => {
+            if (confirm("¿Estás seguro de eliminar este parking?")) {
+                try {
+                    await deleteDoc(doc(db, "parkings", parkingId));
+                    alert("Parking eliminado correctamente");
+                } catch (error) {
+                    console.error("Error al eliminar el parking:", error);
+                    alert("Error al eliminar el parking. Inténtalo de nuevo.");
+                }
+            }
+        };
+
+        // Agregar nuevo parking
+        document.getElementById("saveParkingButton").addEventListener("click", async () => {
+            const label = document.getElementById("newParkingLabel").value;
+            const status = document.getElementById("newParkingStatus").value;
+            if (label && status) {
+                try {
+                    await addDoc(collection(db, "parkings"), { label, status });
+                    alert("Parking agregado correctamente");
+                    addParkingModal.style.display = "none";
+                } catch (error) {
+                    console.error("Error al agregar el parking:", error);
+                    alert("Error al agregar el parking. Inténtalo de nuevo.");
+                }
+            }
+        });
+
+        // Inicializar
+        getParkings();
+    </script>
 </body>
 </html>
-
