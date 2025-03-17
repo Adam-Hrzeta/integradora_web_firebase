@@ -5,13 +5,34 @@ import {
   updateProfile,
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
+// Función para mostrar/ocultar la contraseña
+function togglePassword(inputId) {
+  const input = document.getElementById(inputId);
+  const icon = input.nextElementSibling;
+  if (input.type === "password") {
+    input.type = "text";
+    icon.textContent = "visibility";
+  } else {
+    input.type = "password";
+    icon.textContent = "visibility_off";
+  }
+}
+
+// Asignar eventos a los íconos de ojo
+document.querySelectorAll(".toggle-password").forEach((icon) => {
+  icon.addEventListener("click", () => {
+    const inputId = icon.parentElement.querySelector("input").id;
+    togglePassword(inputId);
+  });
+});
+
 // Función para iniciar sesión
-document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
+document.getElementById("loginForm")?.addEventListener("submit", async (e) => {
   e.preventDefault();
   console.log("Formulario de inicio de sesión enviado");
 
-  const email = document.getElementById('email').value;
-  const password = document.getElementById('password').value;
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
 
   try {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
@@ -26,13 +47,13 @@ document.getElementById('loginForm')?.addEventListener('submit', async (e) => {
 });
 
 // Función para registrarse
-document.getElementById('registerForm')?.addEventListener('submit', async (e) => {
+document.getElementById("registerForm")?.addEventListener("submit", async (e) => {
   e.preventDefault();
   console.log("Formulario de registro enviado");
 
-  const email = document.getElementById('email').value;
-  const password = document.getElementById('password').value;
-  const displayName = document.getElementById('displayName').value;
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+  const displayName = document.getElementById("displayName").value;
 
   try {
     // Crea el usuario con correo y contraseña

@@ -222,14 +222,6 @@
             border-color: #ffffff;
         }
 
-        .close {
-            color: #f44336; /* Rojo */
-            cursor: pointer;
-            font-size: 24px;
-            text-align: right;
-            display: block;
-        }
-
         .password-container {
             position: relative;
         }
@@ -304,7 +296,6 @@
         <input type="text" id="newUserName" placeholder="Nuevo Nombre">
         <button id="saveNameButton" class="btn waves-effect waves-light">Guardar</button>
         <button id="cancelNameButton" class="btn waves-effect waves-light cancel">Cancelar</button>
-        <span class="close">&times;</span>
     </div>
 
     <!-- Modal para cambiar contraseña -->
@@ -319,7 +310,6 @@
         </div>
         <button id="savePasswordButton" class="btn waves-effect waves-light">Guardar</button>
         <button id="cancelPasswordButton" class="btn waves-effect waves-light cancel">Cancelar</button>
-        <span class="close">&times;</span>
     </div>
 
     <!-- Modal para agregar parking -->
@@ -332,7 +322,6 @@
         </select>
         <button id="saveParkingButton" class="btn waves-effect waves-light">Guardar</button>
         <button id="cancelParkingButton" class="btn waves-effect waves-light cancel">Cancelar</button>
-        <span class="close">&times;</span>
     </div>
 
     <!-- Scripts de Firebase y lógica -->
@@ -373,13 +362,17 @@
         const changePasswordModal = document.getElementById("changePasswordModal");
         const addParkingModal = document.getElementById("addParkingModal");
 
-        // Cerrar modales
-        document.querySelectorAll(".close").forEach(button => {
-            button.addEventListener("click", () => {
+        // Cerrar modales al hacer clic fuera de ellos
+        window.addEventListener("click", (event) => {
+            if (event.target === editNameModal) {
                 editNameModal.style.display = "none";
+            }
+            if (event.target === changePasswordModal) {
                 changePasswordModal.style.display = "none";
+            }
+            if (event.target === addParkingModal) {
                 addParkingModal.style.display = "none";
-            });
+            }
         });
 
         // Botones de cancelar
