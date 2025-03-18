@@ -1,6 +1,57 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <text>ADMINISTRADOR</text>
-    </head>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel de Administrador</title>
+  <!-- Materialize CSS -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
+  <!-- Iconos de Material Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!-- Estilos personalizados -->
+  <style>
+    body {
+      background-color: #f5f5f5;
+      color: #333;
+      font-family: 'Arial', sans-serif;
+      padding: 20px;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .user-card {
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    .user-card h5 {
+      margin-top: 0;
+      color: #7e57c2;
+    }
+    .vehicle-list {
+      margin-top: 10px;
+    }
+    .vehicle-item {
+      background-color: #f1f1f1;
+      border-radius: 4px;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+    .vehicle-item p {
+      margin: 5px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h3>Panel de Administrador</h3>
+    <div id="usersList"></div>
+  </div>
+
+  <!-- Scripts -->
+  <script type="module" src="../static/controllers/manageUsers.js"></script>
+</body>
 </html>

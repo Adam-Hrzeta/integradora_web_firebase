@@ -1,9 +1,10 @@
-import { auth } from "../firebase_config.js";
+import { auth, db } from "../firebase_config.js";
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   updateProfile,
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { doc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 // Función para mostrar/ocultar la contraseña
 function togglePassword(inputId) {
@@ -56,15 +57,25 @@ document.getElementById("registerForm")?.addEventListener("submit", async (e) =>
   const displayName = document.getElementById("displayName").value;
 
   try {
-    // Crea el usuario con correo y contraseña
+    // Crea el usuario en Firebase Authentication
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    console.log("Usuario registrado:", userCredential.user);
+    const user = userCredential.user;
+    console.log("Usuario registrado:", user);
 
     // Actualiza el perfil del usuario con el nombre
-    await updateProfile(userCredential.user, {
+    await updateProfile(user, {
       displayName: displayName,
     });
     console.log("Perfil actualizado con el nombre:", displayName);
+
+    // Guarda los datos del usuario en Firestore con el rol de "admin"
+    await setDoc(doc(db, "users", user.uid), {
+      email: user.email,
+      displayName: displayName,
+      role: "admin", // Asignar el rol de administrador
+      createdAt: new Date(),
+    });
+    console.log("Usuario guardado en Firestore con rol de admin:", user.uid);
 
     alert("Registro exitoso");
     window.location.href = "/login"; // Redirige al usuario a la página de inicio de sesión
