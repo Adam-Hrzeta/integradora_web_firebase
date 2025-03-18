@@ -18,6 +18,9 @@ def register():
 def profile():
     return render_template('profileAdmin.html')
 
+@app.route('/manageUsers')
+def manageUsers():
+    return render_template('manageUsers.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

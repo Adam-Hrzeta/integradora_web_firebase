@@ -4,6 +4,8 @@ import {
   signOut,
   updatePassword,
   updateProfile,
+  EmailAuthProvider,
+  reauthenticateWithCredential,
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import {
   getFirestore,
@@ -88,6 +90,7 @@ loadModals().then(() => {
 
     // Abrir modal de cambiar contraseña
     changePasswordButton.addEventListener("click", () => {
+        document.getElementById("oldPassword").value = ""; // Limpiar el input
         document.getElementById("newPassword").value = ""; // Limpiar el input
         document.getElementById("confirmPassword").value = ""; // Limpiar el input
         changePasswordModal.style.display = "block";
@@ -129,23 +132,33 @@ loadModals().then(() => {
 
     // Guardar nueva contraseña
     document.getElementById("savePasswordButton").addEventListener("click", async () => {
+        const oldPassword = document.getElementById("oldPassword").value;
         const newPassword = document.getElementById("newPassword").value;
         const confirmPassword = document.getElementById("confirmPassword").value;
 
         if (newPassword !== confirmPassword) {
-            alert("Las contraseñas no coinciden. Inténtalo de nuevo.");
+            alert("Las nuevas contraseñas no coinciden. Inténtalo de nuevo.");
             return;
         }
 
-        if (newPassword) {
-            try {
-                await updatePassword(auth.currentUser, newPassword);
-                alert("Contraseña actualizada correctamente");
-                changePasswordModal.style.display = "none";
-            } catch (error) {
-                console.error("Error al actualizar la contraseña:", error);
-                alert("Error al actualizar la contraseña. Inténtalo de nuevo.");
-            }
+        if (!oldPassword) {
+            alert("Debes ingresar la contraseña anterior.");
+            return;
+        }
+
+        try {
+            // Verificar la contraseña anterior
+            const user = auth.currentUser;
+            const credential = EmailAuthProvider.credential(user.email, oldPassword);
+            await reauthenticateWithCredential(user, credential);
+
+            // Cambiar la contraseña
+            await updatePassword(user, newPassword);
+            alert("Contraseña actualizada correctamente");
+            changePasswordModal.style.display = "none";
+        } catch (error) {
+            console.error("Error al actualizar la contraseña:", error);
+            alert("Error al actualizar la contraseña. Verifica la contraseña anterior e inténtalo de nuevo.");
         }
     });
 
@@ -164,6 +177,11 @@ loadModals().then(() => {
             }
         }
     });
+});
+
+// abrir el modulo de administración de usuarios y vehiculos
+manageUsers.addEventListener("click", () => {
+    window.location.href = "/manageUsers";
 });
 
 // Cerrar sesión
