@@ -1,6 +1,6 @@
 import { auth, db } from "../firebase_config.js";
-import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import { collection, query, where, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { onAuthStateChanged, deleteUser } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { collection, query, where, getDocs, doc, getDoc, deleteDoc, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 // Referencia a la lista de usuarios en el DOM
 const usersList = document.getElementById("usersList");
@@ -10,7 +10,7 @@ const isAdmin = async (userId) => {
   const userDoc = await getDoc(doc(db, "users", userId));
   if (userDoc.exists()) {
     const userData = userDoc.data();
-    return userData.role === "admin"; // Verificar si el rol es "admin"
+    return userData.role === "admin";
   }
   return false;
 };
@@ -23,10 +23,13 @@ const getAllUsers = async () => {
 
   const users = [];
   usersSnapshot.forEach((doc) => {
-    users.push({ id: doc.id, ...doc.data() });
+    const userData = doc.data();
+    // Solo incluir usuarios que no sean admin
+    if (userData.role !== "admin") {
+      users.push({ id: doc.id, ...userData });
+    }
   });
 
-  console.log("Usuarios obtenidos:", users); // Depuración
   return users;
 };
 
@@ -41,14 +44,71 @@ const getUserVehicles = async (userId) => {
     vehicles.push({ id: doc.id, ...doc.data() });
   });
 
-  console.log(`Vehículos del usuario ${userId}:`, vehicles); // Depuración
   return vehicles;
+};
+
+// Función para enviar mensaje a un usuario
+const sendMessageToUser = async (userId, userEmail) => {
+  const message = prompt("Ingresa el mensaje que deseas enviar:");
+  if (message) {
+    try {
+      await addDoc(collection(db, "messages"), {
+        userId: userId,
+        userEmail: userEmail,
+        message: message,
+        fromAdmin: true,
+        timestamp: new Date(),
+        read: false
+      });
+      alert("Mensaje enviado correctamente");
+    } catch (error) {
+      console.error("Error al enviar mensaje:", error);
+      alert("Error al enviar el mensaje. Inténtalo de nuevo.");
+    }
+  }
+};
+
+// Función para eliminar un usuario y sus datos asociados
+const deleteUserAndData = async (userId, userEmail) => {
+  if (confirm("¿Estás seguro de eliminar este usuario? Esta acción no se puede deshacer.")) {
+    try {
+      // Eliminar vehículos del usuario
+      const vehiclesRef = collection(db, "vehicles");
+      const vehiclesQuery = query(vehiclesRef, where("userId", "==", userId));
+      const vehiclesSnapshot = await getDocs(vehiclesQuery);
+      const deleteVehiclePromises = vehiclesSnapshot.docs.map(doc => deleteDoc(doc.ref));
+      await Promise.all(deleteVehiclePromises);
+
+      // Eliminar mensajes del usuario
+      const messagesRef = collection(db, "messages");
+      const messagesQuery = query(messagesRef, where("userId", "==", userId));
+      const messagesSnapshot = await getDocs(messagesQuery);
+      const deleteMessagePromises = messagesSnapshot.docs.map(doc => deleteDoc(doc.ref));
+      await Promise.all(deleteMessagePromises);
+
+      // Eliminar documento del usuario en Firestore
+      await deleteDoc(doc(db, "users", userId));
+
+      // Eliminar la cuenta de autenticación
+      const user = auth.currentUser;
+      if (user.email === userEmail) {
+        await deleteUser(user);
+      }
+
+      alert("Usuario eliminado correctamente");
+      loadUsers(); // Recargar la lista de usuarios
+    } catch (error) {
+      console.error("Error al eliminar usuario:", error);
+      alert("Error al eliminar el usuario. Asegúrate de tener los permisos necesarios.");
+    }
+  }
 };
 
 // Función para cargar y mostrar usuarios con sus vehículos
 const loadUsers = async () => {
   try {
     const users = await getAllUsers();
+    usersList.innerHTML = ""; // Limpiar la lista actual
 
     await Promise.all(users.map(async (user) => {
       const userId = user.id;
@@ -62,11 +122,9 @@ const loadUsers = async () => {
       const userCard = document.createElement("div");
       userCard.className = "user-card";
       userCard.innerHTML = `
-        <h5>${userEmail}</h5>
-        <p><strong>Nombre:</strong> ${displayName}</p>
-        <p><strong>ID:</strong> ${userId}</p>
+        <h5>${displayName}</h5>
         <div class="vehicle-list">
-          <h6>Vehículos:</h6>
+          <h6>Vehículos Registrados:</h6>
           ${vehicles.length > 0
             ? vehicles.map(vehicle => `
               <div class="vehicle-item">
@@ -79,6 +137,14 @@ const loadUsers = async () => {
             : "<p>No hay vehículos registrados.</p>"
           }
         </div>
+        <div class="user-actions">
+          <button class="action-btn message-btn" onclick="window.sendMessageToUser('${userId}', '${userEmail}')">
+            <i class="material-icons">message</i> Enviar Mensaje
+          </button>
+          <button class="action-btn delete-btn" onclick="window.deleteUserAndData('${userId}', '${userEmail}')">
+            <i class="material-icons">delete</i> Eliminar
+          </button>
+        </div>
       `;
       usersList.appendChild(userCard);
     }));
@@ -86,6 +152,10 @@ const loadUsers = async () => {
     console.error("Error al cargar usuarios:", error);
   }
 };
+
+// Hacer las funciones disponibles globalmente
+window.deleteUserAndData = deleteUserAndData;
+window.sendMessageToUser = sendMessageToUser;
 
 // Cargar usuarios al iniciar
 onAuthStateChanged(auth, async (user) => {
