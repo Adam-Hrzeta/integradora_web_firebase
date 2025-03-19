@@ -22,5 +22,13 @@ def profile():
 def manageUsers():
     return render_template('manageUsers.html')
 
+@app.route('/messages')
+def messages():
+    return render_template('messages.html')
+
+@app.route('/mobile/messages')
+def mobile_messages():
+    return render_template('mobile/messages.html')
+
 if __name__ == '__main__':
     app.run(debug=True)

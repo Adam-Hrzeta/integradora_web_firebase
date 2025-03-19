@@ -47,27 +47,6 @@ const getUserVehicles = async (userId) => {
   return vehicles;
 };
 
-// Función para enviar mensaje a un usuario
-const sendMessageToUser = async (userId, userEmail) => {
-  const message = prompt("Ingresa el mensaje que deseas enviar:");
-  if (message) {
-    try {
-      await addDoc(collection(db, "messages"), {
-        userId: userId,
-        userEmail: userEmail,
-        message: message,
-        fromAdmin: true,
-        timestamp: new Date(),
-        read: false
-      });
-      alert("Mensaje enviado correctamente");
-    } catch (error) {
-      console.error("Error al enviar mensaje:", error);
-      alert("Error al enviar el mensaje. Inténtalo de nuevo.");
-    }
-  }
-};
-
 // Función para eliminar un usuario y sus datos asociados
 const deleteUserAndData = async (userId, userEmail) => {
   if (confirm("¿Estás seguro de eliminar este usuario? Esta acción no se puede deshacer.")) {
@@ -138,9 +117,6 @@ const loadUsers = async () => {
           }
         </div>
         <div class="user-actions">
-          <button class="action-btn message-btn" onclick="window.sendMessageToUser('${userId}', '${userEmail}')">
-            <i class="material-icons">message</i> Enviar Mensaje
-          </button>
           <button class="action-btn delete-btn" onclick="window.deleteUserAndData('${userId}', '${userEmail}')">
             <i class="material-icons">delete</i> Eliminar
           </button>
@@ -155,7 +131,6 @@ const loadUsers = async () => {
 
 // Hacer las funciones disponibles globalmente
 window.deleteUserAndData = deleteUserAndData;
-window.sendMessageToUser = sendMessageToUser;
 
 // Cargar usuarios al iniciar
 onAuthStateChanged(auth, async (user) => {

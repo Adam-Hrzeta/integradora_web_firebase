@@ -180,8 +180,12 @@ loadModals().then(() => {
 });
 
 // abrir el modulo de administración de usuarios y vehiculos
-manageUsers.addEventListener("click", () => {
-    window.location.href = "/manageUsers";
+document.getElementById("manageUsers").addEventListener("click", () => {
+    window.location.href = "/manage_users";
+});
+
+document.getElementById("messagesButton").addEventListener("click", () => {
+    window.location.href = "/messages";
 });
 
 // Cerrar sesión

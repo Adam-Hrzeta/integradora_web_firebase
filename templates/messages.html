@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mensajes de Usuarios</title>
+    <!-- Materialize CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
+    <!-- Iconos de Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Fuente Century Gothic -->
+    <link href="https://fonts.googleapis.com/css2?family=Century+Gothic:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Estilos personalizados -->
+    <style>
+        /* Animaciones personalizadas */
+        @keyframes slideIn {
+            from { transform: translateX(-100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        body {
+            background-image: url('https://static.vecteezy.com/system/resources/previews/025/515/340/original/parking-top-view-garage-floor-with-cars-from-above-city-parking-lot-with-free-space-cartoon-street-carpark-with-various-vehicles-illustration-vector.jpg');
+            background-size: cover;
+            background-position: center;
+            color: #ffffff;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Century Gothic', sans-serif;
+        }
+
+        .main-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+            max-width: 1000px;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.726);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            animation: slideIn 1.0s ease-out forwards;
+        }
+
+        .messages-container {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 1.0s ease-in forwards;
+        }
+
+        .message-list {
+            max-height: 600px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .message-item {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            color: #c5cae9;
+        }
+
+        .message-content {
+            color: #ffffff;
+            margin: 0;
+            white-space: pre-wrap;
+        }
+
+        .back-btn {
+            background-color: #7e57c2;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background-color: #9575cd;
+        }
+
+        .user-info {
+            color: #7e57c2;
+            font-weight: bold;
+        }
+
+        .response-form {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .response-input {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 10px;
+            border-radius: 5px;
+            width: 100%;
+            margin-bottom: 10px;
+            font-family: 'Century Gothic', sans-serif;
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .response-input::placeholder {
+            color: #c5cae9;
+        }
+
+        .send-response-btn {
+            background-color: #7e57c2;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 25px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .send-response-btn:hover {
+            background-color: #9575cd;
+        }
+
+        .unread-badge {
+            background-color: #f44336;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            margin-left: 8px;
+        }
+
+        .filter-container {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .filter-btn {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 8px 16px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn.active {
+            background-color: #7e57c2;
+            border-color: #7e57c2;
+        }
+
+        .filter-btn:hover {
+            background-color: #9575cd;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <button class="back-btn" onclick="window.location.href='/profile'">
+            <i class="material-icons">arrow_back</i> Volver
+        </button>
+        <div class="messages-container">
+            <h2>Mensajes de Usuarios</h2>
+            <div class="filter-container">
+                <button id="allMessagesBtn" class="filter-btn active">Todos</button>
+                <button id="unreadMessagesBtn" class="filter-btn">No leídos</button>
+            </div>
+            <div id="messageList" class="message-list"></div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script type="module" src="/static/controllers/messages.js"></script>
+</body>
+</html> 
