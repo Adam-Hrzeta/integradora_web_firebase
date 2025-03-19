@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buzón de Usuario</title>
+    <!-- Materialize CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
+    <!-- Iconos de Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Fuente Century Gothic -->
+    <link href="https://fonts.googleapis.com/css2?family=Century+Gothic:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Estilos personalizados -->
+    <style>
+        /* Animaciones personalizadas */
+        @keyframes slideIn {
+            from { transform: translateX(-100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        body {
+            background-image: url('https://static.vecteezy.com/system/resources/previews/025/515/340/original/parking-top-view-garage-floor-with-cars-from-above-city-parking-lot-with-free-space-cartoon-street-carpark-with-various-vehicles-illustration-vector.jpg');
+            background-size: cover;
+            background-position: center;
+            color: #ffffff;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            font-family: 'Century Gothic', sans-serif;
+        }
+
+        .main-container {
+            display: flex;
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.726);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            animation: slideIn 1.0s ease-out forwards;
+            margin-top: 60px;
+        }
+
+        .chats-list {
+            width: 300px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            overflow: hidden;
+        }
+
+        .chat-item {
+            padding: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .chat-item:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .chat-item.active {
+            background-color: rgba(126, 87, 194, 0.3);
+        }
+
+        .chat-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        .chat-item-email {
+            font-weight: bold;
+            color: #7e57c2;
+        }
+
+        .chat-item-time {
+            font-size: 12px;
+            color: #c5cae9;
+        }
+
+        .chat-item-preview {
+            font-size: 14px;
+            color: #c5cae9;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            overflow: hidden;
+        }
+
+        .chat-header {
+            padding: 15px;
+            background-color: rgba(126, 87, 194, 0.3);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .message-item {
+            max-width: 80%;
+            padding: 10px;
+        }
+
+        .message-item.user-message {
+            align-self: flex-end;
+        }
+
+        .message-item.admin-message {
+            align-self: flex-start;
+        }
+
+        .message-bubble {
+            padding: 12px;
+            border-radius: 16px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .user-message .message-bubble {
+            background-color: #7e57c2;
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        .admin-message .message-bubble {
+            background-color: #e0e0e0;
+            color: #333;
+            border-bottom-left-radius: 4px;
+        }
+
+        .message-content {
+            margin: 0;
+            white-space: pre-wrap;
+            line-height: 1.4;
+        }
+
+        .message-time {
+            font-size: 12px;
+            color: #666;
+            margin-top: 4px;
+            align-self: flex-end;
+        }
+
+        .chat-input {
+            padding: 15px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .chat-input textarea {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            padding: 10px;
+            margin-bottom: 10px;
+            width: 100%;
+            resize: none;
+            min-height: 80px;
+        }
+
+        .send-button {
+            background-color: #7e57c2;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 25px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .send-button:hover {
+            background-color: #9575cd;
+        }
+
+        .unread-badge {
+            background-color: #f44336;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+        }
+
+        .back-btn {
+            background-color: #7e57c2;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+        }
+
+        .back-btn:hover {
+            background-color: #9575cd;
+        }
+    </style>
+</head>
+<body>
+    <button class="back-btn" onclick="window.location.href='/profile'">
+        <i class="material-icons">arrow_back</i> Volver
+    </button>
+    <div class="main-container">
+        <div class="chats-list">
+            <h3 style="padding: 15px; margin: 0; border-bottom: 1px solid rgba(255, 255, 255, 0.2);">Buzones de Usuario</h3>
+            <div id="chatsList"></div>
+        </div>
+        <div class="chat-container">
+            <div class="chat-header">
+                <h3 id="selectedChatTitle" style="margin: 0;">Selecciona un buzón</h3>
+            </div>
+            <div id="chatMessages" class="chat-messages"></div>
+            <div class="chat-input">
+                <textarea id="messageInput" placeholder="Escribe tu respuesta..."></textarea>
+                <button id="sendMessage" class="send-button">
+                    <i class="material-icons">send</i>
+                    Enviar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts de Firebase -->
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js"></script>
+    
+    <!-- Scripts de la aplicación -->
+    <script type="module" src="{{ url_for('static', filename='controllers/messages.js') }}"></script>
+</body>
+</html> 

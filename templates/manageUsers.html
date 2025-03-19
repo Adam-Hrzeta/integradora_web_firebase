@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestión de Usuarios</title>
+  <!-- Materialize CSS -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
+  <!-- Iconos de Material Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!-- Fuente Century Gothic -->
+  <link href="https://fonts.googleapis.com/css2?family=Century+Gothic:wght@400;700&display=swap" rel="stylesheet">
+  <!-- Estilos personalizados -->
+  <style>
+    /* Animaciones personalizadas */
+    @keyframes slideIn {
+      from { transform: translateX(-100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    body {
+      background-image: url('https://static.vecteezy.com/system/resources/previews/025/515/340/original/parking-top-view-garage-floor-with-cars-from-above-city-parking-lot-with-free-space-cartoon-street-carpark-with-various-vehicles-illustration-vector.jpg');
+      background-size: cover;
+      background-position: center;
+      color: #ffffff;
+      margin: 0;
+      padding: 20px;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Century Gothic', sans-serif;
+    }
+
+    .main-container {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      width: 100%;
+      max-width: 1200px;
+      padding: 20px;
+      background-color: rgba(0, 0, 0, 0.726);
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      animation: slideIn 1.0s ease-out forwards;
+    }
+
+    .users-container {
+      background-color: rgba(255, 255, 255, 0.1);
+      padding: 20px;
+      border-radius: 10px;
+      border: 1px solid rgb(255, 255, 255);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      animation: fadeIn 1.0s ease-in forwards;
+    }
+
+    .user-card {
+      background-color: rgba(255, 255, 255, 0.377);
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transition: background-color 0.3s ease;
+    }
+
+    .user-card:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .user-card h5 {
+      margin-top: 0;
+      color: #ffffff;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    .vehicle-list {
+      margin-top: 15px;
+    }
+
+    .vehicle-item {
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+      padding: 15px;
+      margin-bottom: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .vehicle-item p {
+      margin: 5px 0;
+      color: #ffffff;
+    }
+
+    .vehicle-item p strong {
+      color: #7e57c2;
+    }
+
+    .user-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .action-btn {
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transition: all 0.3s ease;
+      border-radius: 25px;
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+
+    .delete-btn {
+      background-color: #f44336;
+      color: white;
+    }
+
+    .delete-btn:hover {
+      background-color: #d32f2f;
+      border-color: #ffffff;
+    }
+
+    .back-button {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background-color: #7e57c2;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 25px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      z-index: 1000;
+      transition: all 0.3s ease;
+    }
+
+    .back-button:hover {
+      background-color: #9575cd;
+    }
+
+    .material-icons {
+      font-size: 20px;
+    }
+  </style>
+</head>
+<body>
+  <button class="back-button" onclick="window.location.href='/profile'">
+    <i class="material-icons">arrow_back</i> Volver
+  </button>
+  <div class="main-container">
+    <div class="users-container">
+      <h2>Gestión de Usuarios</h2>
+      <div id="usersList"></div>
+    </div>
+  </div>
+
+  <!-- Scripts de Firebase -->
+  <script type="module" src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
+  <script type="module" src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js"></script>
+  <script type="module" src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
+  <script type="module" src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js"></script>
+  
+  <!-- Scripts de la aplicación -->
+  <script type="module" src="{{ url_for('static', filename='firebase_config.js') }}"></script>
+  <script type="module" src="{{ url_for('static', filename='controllers/manageUsers.js') }}"></script>
+</body>
+</html>

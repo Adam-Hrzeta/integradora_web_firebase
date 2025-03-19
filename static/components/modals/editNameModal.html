@@ -1,0 +1,73 @@
+<div id="editNameModal" class="modal">
+    <style>
+        /* Estilos específicos para este modal */
+        #editNameModal {
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #ffffff;
+            border-radius: 10px;
+            padding: 20px;
+            max-width: 400px;
+            width: 90%; /* Ajusta el ancho del modal */
+            position: fixed; /* Fija el modal en la pantalla */
+            top: 50%; /* Lo coloca en el centro vertical */
+            left: 50%; /* Lo coloca en el centro horizontal */
+            transform: translate(-50%, -50%); /* Centra exactamente */
+            z-index: 1000; /* Asegura que esté por encima de otros elementos */
+            display: none; /* Oculta el modal por defecto */
+            box-sizing: border-box; /* Asegura que el padding no afecte el ancho total */
+        }
+
+        #editNameModal input {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 12px 15px;
+            border-radius: 5px;
+            width: 100%;
+            margin-bottom: 15px;
+            font-family: 'Century Gothic', sans-serif;
+            font-size: 1rem;
+            box-sizing: border-box; /* Asegura que el padding no afecte el ancho total */
+        }
+
+        #editNameModal input::placeholder {
+            color: #c5cae9;
+        }
+
+        #editNameModal button {
+            background-color: #4caf50;
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            font-family: 'Century Gothic', sans-serif;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-sizing: border-box; /* Asegura que el padding no afecte el ancho total */
+        }
+
+        #editNameModal button.cancel {
+            background-color: #f44336;
+            margin-top: 10px;
+        }
+
+        #editNameModal button:hover {
+            background-color: #66bb6a;
+            border-color: #ffffff;
+        }
+
+        #editNameModal button.cancel:hover {
+            background-color: #e53935;
+            border-color: #ffffff;
+        }
+    </style>
+    <input type="text" id="newUserName" placeholder="Nuevo Nombre">
+    <button id="saveNameButton" class="btn waves-effect waves-light">Guardar</button>
+    <button id="cancelNameButton" class="btn waves-effect waves-light cancel">Cancelar</button>
+</div>

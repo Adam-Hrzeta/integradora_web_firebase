@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrador de Parkings</title>
+    <!-- Materialize CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
+    <!-- Iconos de Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Fuente Century Gothic -->
+    <link href="https://fonts.googleapis.com/css2?family=Century+Gothic:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Estilos personalizados -->
+    <style>
+        /* Animaciones personalizadas */
+        @keyframes slideIn {
+            from { transform: translateX(-100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide-in {
+            animation: slideIn 1.0s ease-out forwards;
+        }
+
+        .fade-in {
+            animation: fadeIn 1.0s ease-in forwards;
+        }
+
+        /* Estilos generales */
+        body {
+            background-image: url('https://static.vecteezy.com/system/resources/previews/025/515/340/original/parking-top-view-garage-floor-with-cars-from-above-city-parking-lot-with-free-space-cartoon-street-carpark-with-various-vehicles-illustration-vector.jpg');
+            background-size: cover;
+            background-position: center;
+            color: #ffffff;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Century Gothic', sans-serif;
+        }
+
+        .main-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.726);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .profile-container, .parkings-container {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid rgb(255, 255, 255);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .profile-container {
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .parkings-container {
+            flex-grow: 1;
+        }
+
+        .profile-container h2 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .profile-container p {
+            margin: 5px 0;
+            font-size: 0.9rem;
+        }
+
+        .profile-container p strong {
+            font-weight: bold;
+        }
+
+        /* Estilos para todos los botones */
+        button {
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            border-radius: 25px;
+        }
+
+        button:hover {
+            border-color: #ffffff;
+        }
+
+        /* Botones del perfil */
+        .profile-container button {
+            width: 100%;
+            margin: 8px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            background-color: #7e57c2;
+            border-radius: 25px;
+        }
+
+        .profile-container button:hover {
+            background-color: #9575cd;
+        }
+
+        .parking-item {
+            background-color: rgba(255, 255, 255, 0.377);
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .parking-item:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .parking-status {
+            padding: 5px 10px;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .parking-status.libre {
+            background-color: #4caf50;
+        }
+
+        .parking-status.ocupado {
+            background-color: #f44336;
+        }
+
+        .parking-status.servicio {
+            background-color: #ff9800;
+        }
+
+        .password-container {
+            position: relative;
+        }
+
+        .password-container .toggle-password {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #c5cae9;
+        }
+
+        .password-container .toggle-password:hover {
+            color: #ffffff;
+        }
+
+        /* Botón "Agregar Parking" */
+        #addParkingButton {
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            width: 50%;
+        }
+
+        /* Responsividad */
+        @media (min-width: 768px) {
+            .main-container {
+                flex-direction: row;
+            }
+
+            .profile-container {
+                width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Contenedor principal -->
+    <div class="main-container slide-in">
+        <!-- Perfil de usuario -->
+        <div class="profile-container fade-in">
+            <h2>Perfil de Administrador</h2>
+            <p id="userName">Nombre</p>
+            <p><strong>Correo Electrónico:</strong></p>
+            <p id="userEmail">correo@ejemplo.com</p>
+            <button id="editNameButton" class="btn waves-effect waves-light">
+                <i class="material-icons">edit</i> Editar Nombre
+            </button>
+            <button id="changePasswordButton" class="btn waves-effect waves-light">
+                <i class="material-icons">lock</i> Cambiar Contraseña
+            </button>
+            <button id="manageUsers" class="btn waves-effect waves-light">
+                <i class="material-icons">manage_accounts</i> Gestion de Usuarios
+            </button>
+            <button id="messagesButton" class="btn waves-effect waves-light">
+                <i class="material-icons">message</i> Mensajes de Usuarios
+            </button>
+            <button id="signOutButton" class="btn waves-effect waves-light red">
+                <i class="material-icons">exit_to_app</i> Cerrar Sesión
+            </button>
+        </div>
+
+        <!-- Parkings disponibles -->
+        <div class="parkings-container fade-in">
+            <h2>Administrar Parkings</h2>
+            <div id="parkingsList"></div>
+            <button id="addParkingButton" class="btn waves-effect waves-light green">
+                <i class="material-icons">add</i> Agregar Parking
+            </button>
+        </div>
+    </div>
+
+    <!-- Contenedor para modales (se cargarán dinámicamente) -->
+    <div id="modals-container"></div>
+
+    <!-- Scripts -->
+    <script type="module" src="{{ url_for('static', filename='controllers/profileAdmin.js') }}"></script>
+</body>
+</html>

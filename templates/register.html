@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Usuario</title>
+    <!-- Materialize CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
+    <!-- Iconos de Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Fuente Century Gothic -->
+    <link href="https://fonts.googleapis.com/css2?family=Century+Gothic:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Estilos personalizados -->
+    <style>
+        /* Animaciones personalizadas */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in forwards;
+        }
+
+        /* Estilos generales */
+        body {
+            background-image: url('https://static.vecteezy.com/system/resources/previews/025/515/340/original/parking-top-view-garage-floor-with-cars-from-above-city-parking-lot-with-free-space-cartoon-street-carpark-with-various-vehicles-illustration-vector.jpg');
+            background-size: cover;
+            background-position: center;
+            color: #ffffff;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Century Gothic', sans-serif;
+        }
+
+        .form-container {
+            background-color: rgba(0, 0, 0, 0.726); /* Fondo semi-transparente oscuro */
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2); /* Borde con opacidad */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .form-container h1 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            font-weight: bold; /* Texto en negritas */
+            text-align: center;
+        }
+
+        .input-field {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .input-field input {
+            background-color: rgba(255, 255, 255, 0.1); /* Fondo semi-transparente */
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.2); /* Borde con opacidad */
+            padding: 10px 40px 10px 10px; /* Espacio para el ícono del ojo */
+            border-radius: 5px;
+            width: 100%;
+            font-family: 'Century Gothic', sans-serif;
+            font-size: 1rem;
+        }
+
+        .input-field input::placeholder {
+            color: #c5cae9; /* Azul claro para el placeholder */
+        }
+
+        .password-container {
+            position: relative;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #c5cae9;
+        }
+
+        .toggle-password:hover {
+            color: #ffffff;
+        }
+
+        .button {
+            width: 100%;
+            background-color: #7e57c2; /* Morado */
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.2); /* Borde con opacidad */
+            padding: 10px 20px;
+            border-radius: 25px; /* Bordes más redondeados */
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Century Gothic', sans-serif;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .button:hover {
+            background-color: #9575cd; /* Morado más claro */
+            border-color: #ffffff;
+        }
+
+        .register-button {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .register-button a {
+            color: #7e57c2; /* Morado */
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .register-button a:hover {
+            text-decoration: underline;
+        }
+
+        .error-message {
+            color: #f44336; /* Rojo */
+            font-size: 0.9rem;
+            margin-top: 5px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container fade-in">
+        <h1>Registro de Usuario</h1>
+        <form id="registerForm">
+            <div class="input-field">
+                <input type="text" id="displayName" placeholder="Nombre completo" required>
+            </div>
+            <div class="input-field">
+                <input type="email" id="email" placeholder="Correo electrónico" required>
+            </div>
+            <div class="input-field password-container">
+                <input type="password" id="password" placeholder="Contraseña" required>
+                <i class="material-icons toggle-password">visibility_off</i>
+            </div>
+            <div class="input-field password-container">
+                <input type="password" id="confirmPassword" placeholder="Confirmar contraseña" required>
+                <i class="material-icons toggle-password">visibility_off</i>
+            </div>
+            <div id="passwordError" class="error-message">Las contraseñas no coinciden.</div>
+            <button type="submit" class="button">Registrarse</button>
+        </form>
+        <p class="register-button"><a href="/login">¿Ya tienes cuenta? Inicia sesión</a></p>
+    </div>
+
+    <!-- Scripts -->
+    <script type="module" src="../static/controllers/auth.js"></script>
+</body>
+</html>
