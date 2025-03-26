@@ -162,16 +162,20 @@ loadModals().then(() => {
     // Agregar nuevo parking
     document.getElementById("saveParkingButton").addEventListener("click", async () => {
         const label = document.getElementById("newParkingLabel").value;
-        const status = document.getElementById("newParkingStatus").value;
-        if (label && status) {
+        const status = "libre"; // Default status
+        const device = "arduino"; // Default device
+
+        if (label) {
             try {
-                await addDoc(collection(db, "parkings"), { label, status });
+                await addDoc(collection(db, "parkings"), { label, status, device });
                 alert("Parking agregado correctamente");
                 addParkingModal.style.display = "none";
             } catch (error) {
                 console.error("Error al agregar el parking:", error);
                 alert("Error al agregar el parking. Inténtalo de nuevo.");
             }
+        } else {
+            alert("Debes ingresar un nombre para el parking.");
         }
     });
 });
